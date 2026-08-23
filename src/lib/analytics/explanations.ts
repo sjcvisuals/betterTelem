@@ -1,11 +1,4 @@
-import type {
-  BattlePair,
-  Car,
-  Lap,
-  RaceControlPeriod,
-  RaceData,
-  RaceEvent,
-} from "@/lib/race/types";
+import type { BattlePair, Car, RaceData, RaceEvent } from "@/lib/race/types";
 import { formatGap } from "@/lib/race/format";
 import { classOrderAtLap, elapsedAtLap } from "./standings";
 

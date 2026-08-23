@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b0e13;
+  --surface: #12161f;
+  --surface-raised: #181d29;
+  --border: #232a3a;
+  --foreground: #e8ecf4;
+  --muted: #8b95a9;
+
+  /* Class identity colours (always paired with a text label). */
+  --class-lmp2: #4cc3ff;
+  --class-lmp2-proam: #b28dff;
+  --class-lmp3: #ffa14c;
+  --class-lmgt3: #3ddc97;
+
+  /* Race status */
+  --flag-green: #2fbf71;
+  --flag-yellow: #f2c94c;
+  --flag-sc: #f2994a;
+  --flag-red: #eb5757;
+
+  --trend-up: #3ddc97;
+  --trend-down: #ff7a7a;
+
+  --accent: #4cc3ff;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--border);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-lmp2: var(--class-lmp2);
+  --color-lmp2-proam: var(--class-lmp2-proam);
+  --color-lmp3: var(--class-lmp3);
+  --color-lmgt3: var(--class-lmgt3);
+  --color-flag-green: var(--flag-green);
+  --color-flag-yellow: var(--flag-yellow);
+  --color-flag-sc: var(--flag-sc);
+  --color-flag-red: var(--flag-red);
+  --color-trend-up: var(--trend-up);
+  --color-trend-down: var(--trend-down);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Timing figures use tabular numerals so values don't jitter as they update. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+::selection {
+  background: rgba(76, 195, 255, 0.35);
+}
+
+/* Focus visibility for keyboard navigation. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

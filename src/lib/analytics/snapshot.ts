@@ -59,7 +59,6 @@ function currentFlagFrom(data: RaceData, leaderLap: number | null): TrackFlag {
 export function buildSnapshot(data: RaceData, options: SnapshotOptions): RaceSnapshot {
   const nowMs = options.nowMs ?? Date.now();
   const carNumbers = data.cars.map((c) => c.carNumber);
-  const carsByNumber = Object.fromEntries(data.cars.map((c) => [c.carNumber, c]));
 
   /* Overall standings */
   const overall = computeStandings(data.lapsByCar, carNumbers, data.retired);

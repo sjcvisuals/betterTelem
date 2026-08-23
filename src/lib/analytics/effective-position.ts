@@ -1,7 +1,7 @@
 import type { EffectivePositionEstimate, Lap } from "@/lib/race/types";
 import { recentPace } from "./pace";
 import { gapBetween } from "./standings";
-import { currentStint, pitStopCount, typicalStintLaps } from "./stint-analysis";
+import { currentStint, typicalStintLaps } from "./stint-analysis";
 
 /**
  * Effective Position: an ESTIMATE of where each car in a class will run

@@ -197,7 +197,7 @@ function generateRace(): RaceData {
 
         let endedInPit = false;
         let pitTime: number | null = null;
-        let driverForLap = sim.car.drivers[sim.driverIndex] ?? null;
+        const driverForLap = sim.car.drivers[sim.driverIndex] ?? null;
 
         if (willPit) {
           endedInPit = true;

@@ -1,0 +1,34 @@
+export function ProvenanceFooter() {
+  return (
+    <footer className="mt-8 rounded-xl border border-line bg-surface p-4 text-xs leading-relaxed text-muted">
+      <p className="font-semibold uppercase tracking-widest text-foreground">
+        About this data
+      </p>
+      <ul className="mt-2 list-disc space-y-1 pl-4">
+        <li>
+          Timing data comes from{" "}
+          <a
+            href="https://openwec.com"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            OpenWEC
+          </a>
+          . Positions, lap times, pit stops and flag periods are taken directly from that
+          feed (or, in demo mode, from a simulated race clearly labeled as demo data).
+        </li>
+        <li>
+          Recent pace, gap trends, pit windows, &ldquo;effective position&rdquo; and the
+          projected order after pit cycles are <strong>calculated by this app</strong> and
+          labeled TREND or ESTIMATE. They are interpretations, not official timing.
+        </li>
+        <li>
+          betterTelem is an independent project. It is not an official European Le Mans
+          Series or FIA WEC timing product and is not affiliated with the series
+          organisers.
+        </li>
+      </ul>
+    </footer>
+  );
+}
