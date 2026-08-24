@@ -297,6 +297,8 @@ function CarDot({
       role="button"
       aria-label={`Car ${dot.car.carNumber}, ${dot.car.team}`}
     >
+      {/* Invisible enlarged hit area: dots are small and move continuously. */}
+      <circle r={20} fill="transparent" stroke="none" />
       <circle
         r={selected ? 13 : 9}
         fill={color}
