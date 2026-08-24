@@ -41,6 +41,18 @@ export function parseElapsed(raw: string | null | undefined): number | null {
   return Number.isFinite(seconds) ? seconds : null;
 }
 
+/**
+ * Parses OpenWEC session timestamps like "2025-08-24 13:00:00+00" into epoch
+ * ms. Date.parse rejects the space separator and the bare "+00" offset.
+ */
+export function parseSessionStartMs(raw: string | null | undefined): number | null {
+  if (!raw) return null;
+  let text = raw.trim().replace(" ", "T");
+  text = text.replace(/([+-]\d{2})$/, "$1:00");
+  const ms = Date.parse(text);
+  return Number.isFinite(ms) ? ms : null;
+}
+
 export function normalizeCar(result: ResultOut): Car {
   return {
     carNumber: result.car_number,
