@@ -3,9 +3,10 @@ import { resolveIdentity } from "@/lib/liveries";
 import { classColor } from "./ui";
 
 /**
- * Team crest (monogram, not an official logo) and livery-painted car marks.
- * Used on the track map, timing tower, and car detail page so viewers can
- * match broadcast colours to a car without hunting for a number.
+ * Team crest (monogram, not an official logo), rounded livery chips, and
+ * circular track-map dots. Used on the track map, timing tower, and car
+ * detail page so viewers can match broadcast colours to a car without
+ * hunting for a number.
  */
 
 function gradientId(prefix: string, carNumber: string, pattern: string): string {
@@ -71,97 +72,59 @@ function LiveryPaint({ livery }: { livery: Livery }) {
   );
 }
 
-/** Top-down prototype silhouette used on the track map. */
-export function LiveryCarMark({
+/** Circular track-map marker: team colours + number, easy to read. */
+export function LiveryMapDot({
   identity,
   className,
   selected = false,
-  headingDeg = 0,
   showNumber = true,
 }: {
   identity: ResolvedIdentity;
   className: string;
   selected?: boolean;
-  headingDeg?: number;
   showNumber?: boolean;
 }) {
   const id = gradientId("map", identity.carNumber, identity.livery.pattern);
-  const scale = selected ? 1.35 : 1;
+  const r = selected ? 14 : 11.5;
   const vertical = identity.livery.pattern === "split-v" || identity.livery.pattern === "nose";
+  const fontSize = identity.carNumber.length > 2 ? 8 : 10;
   return (
-    <g transform={`rotate(${headingDeg}) scale(${scale})`} opacity={1}>
+    <g>
       <defs>
         <linearGradient
           id={id}
-          x1={vertical ? "0" : "0"}
-          y1={vertical ? "0" : "0"}
+          x1="0"
+          y1="0"
           x2={vertical ? "1" : "0"}
           y2={vertical ? "0" : "1"}
         >
           <LiveryPaint livery={identity.livery} />
         </linearGradient>
       </defs>
-      {/* Class ring so multiclass identity is still readable without colour-only. */}
-      <ellipse
-        rx={18}
-        ry={10}
+      <circle
+        r={r + 2.4}
         fill="none"
         stroke={classColor(className)}
         strokeWidth={selected ? 2.4 : 1.8}
         opacity={0.95}
       />
-      <path
-        d="M -14 0 C -13 -4.5, -8 -6.2, -3 -6.4 L 7 -5.6 C 10 -5.2, 12 -3.4, 14 -1.2 L 15 0 L 14 1.2 C 12 3.4, 10 5.2, 7 5.6 L -3 6.4 C -8 6.2, -13 4.5, -14 0 Z"
-        fill={`url(#${id})`}
-        stroke="#0b0e13"
-        strokeWidth={0.7}
-      />
-      {/* Cockpit */}
-      <ellipse cx={2} cy={0} rx={3.2} ry={2.1} fill="#0b0e13" opacity={0.55} />
+      <circle r={r} fill={`url(#${id})`} stroke="#0b0e13" strokeWidth={0.8} />
       {showNumber && (
         <text
-          y={1.6}
-          fontSize={7.2}
+          y={0}
+          dominantBaseline="central"
+          fontSize={fontSize}
           fontWeight={800}
           fill={identity.livery.number}
           textAnchor="middle"
           style={{ fontVariantNumeric: "tabular-nums" }}
           paintOrder="stroke"
           stroke="#0b0e13"
-          strokeWidth={0.4}
+          strokeWidth={0.45}
         >
           {identity.carNumber}
         </text>
       )}
-    </g>
-  );
-}
-
-/** SVG-native crest for use inside the track map. */
-export function TeamCrestMark({
-  identity,
-  x = 0,
-  y = 0,
-  size = 14,
-}: {
-  identity: ResolvedIdentity;
-  x?: number;
-  y?: number;
-  size?: number;
-}) {
-  const fontSize = identity.initials.length > 3 ? size * 0.34 : size * 0.4;
-  return (
-    <g transform={`translate(${x} ${y})`}>
-      <circle r={size / 2} fill={identity.crestBg} stroke="#0b0e13" strokeWidth={0.8} />
-      <text
-        y={fontSize * 0.35}
-        textAnchor="middle"
-        fontSize={fontSize}
-        fontWeight={800}
-        fill={identity.crestFg}
-      >
-        {identity.initials}
-      </text>
     </g>
   );
 }
@@ -202,7 +165,7 @@ export function TeamCrest({
   );
 }
 
-/** Compact side-view livery chip for the timing tower. */
+/** Compact rounded-rectangle livery chip for the timing tower. */
 export function LiveryChip({
   carNumber,
   team,
@@ -213,7 +176,12 @@ export function LiveryChip({
   size?: "sm" | "md" | "lg";
 }) {
   const identity = resolveIdentity(carNumber, team);
-  const dims = size === "lg" ? { w: 88, h: 40, font: 13 } : size === "sm" ? { w: 44, h: 22, font: 8 } : { w: 56, h: 28, font: 10 };
+  const dims =
+    size === "lg"
+      ? { w: 88, h: 40, font: 14 }
+      : size === "sm"
+        ? { w: 44, h: 22, font: 9 }
+        : { w: 56, h: 28, font: 11 };
   const id = gradientId("chip", carNumber, identity.livery.pattern);
   const vertical = identity.livery.pattern === "split-v" || identity.livery.pattern === "nose";
   return (
@@ -229,15 +197,21 @@ export function LiveryChip({
           <LiveryPaint livery={identity.livery} />
         </linearGradient>
       </defs>
-      <path
-        d="M 3 18 L 8 10 C 10 7, 14 6, 20 6 L 38 6 C 42 6, 46 8, 50 12 L 53 16 C 54 17, 54 19, 52 20 L 8 20 C 5 20, 3 19, 3 18 Z"
+      <rect
+        x="0.6"
+        y="0.6"
+        width="54.8"
+        height="26.8"
+        rx="7"
+        ry="7"
         fill={`url(#${id})`}
         stroke="#0b0e13"
-        strokeWidth="0.8"
+        strokeWidth="1"
       />
       <text
         x="28"
-        y="17"
+        y="14"
+        dominantBaseline="central"
         textAnchor="middle"
         fontSize={dims.font}
         fontWeight={800}
