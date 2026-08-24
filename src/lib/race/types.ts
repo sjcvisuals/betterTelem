@@ -121,6 +121,8 @@ export interface LiveCarState {
   /** Rolling representative pace (see analytics/pace.ts). */
   recentPaceSeconds: number | null;
   representativeLapCount: number;
+  /** Race time when this car last crossed the line (for track-position estimates). */
+  lastCrossingElapsedSeconds: number | null;
 
   /** Trend vs the car ahead in class, from representative laps. */
   gapTrend: GapTrend | null;

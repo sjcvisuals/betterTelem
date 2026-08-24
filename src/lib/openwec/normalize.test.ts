@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { groupLapsByCar, normalizeFlag, parseElapsed } from "./normalize";
+import {
+  groupLapsByCar,
+  normalizeFlag,
+  parseElapsed,
+  parseSessionStartMs,
+} from "./normalize";
 import type { Lap } from "@/lib/race/types";
 
 describe("normalizeFlag", () => {
@@ -30,6 +35,24 @@ describe("parseElapsed", () => {
     expect(parseElapsed(null)).toBeNull();
     expect(parseElapsed("abc")).toBeNull();
     expect(parseElapsed("1:aa:00")).toBeNull();
+  });
+});
+
+describe("parseSessionStartMs", () => {
+  it("parses OpenWEC's space-separated timestamps with bare +00 offsets", () => {
+    // Real format from GET /sessions: "2025-08-24 13:00:00+00"
+    expect(parseSessionStartMs("2025-08-24 13:00:00+00")).toBe(
+      Date.parse("2025-08-24T13:00:00Z"),
+    );
+    expect(parseSessionStartMs("2025-08-24T13:00:00+02:00")).toBe(
+      Date.parse("2025-08-24T13:00:00+02:00"),
+    );
+  });
+
+  it("returns null for missing or invalid input", () => {
+    expect(parseSessionStartMs(null)).toBeNull();
+    expect(parseSessionStartMs("")).toBeNull();
+    expect(parseSessionStartMs("not a date")).toBeNull();
   });
 });
 

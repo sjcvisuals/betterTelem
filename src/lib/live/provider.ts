@@ -12,6 +12,7 @@ import {
   normalizeCar,
   normalizeLap,
   normalizeRaceControl,
+  parseSessionStartMs,
 } from "@/lib/openwec/normalize";
 import type { RaceData, SessionInfo } from "@/lib/race/types";
 
@@ -94,8 +95,8 @@ export async function loadLiveRaceData(
     }
   }
   if (elapsedSeconds === 0 && sessionMeta.sessionAt) {
-    const startMs = Date.parse(sessionMeta.sessionAt.replace(" ", "T"));
-    if (Number.isFinite(startMs)) {
+    const startMs = parseSessionStartMs(sessionMeta.sessionAt);
+    if (startMs != null) {
       elapsedSeconds = Math.max(0, Math.min((Date.now() - startMs) / 1000, ELMS_RACE_DURATION_SECONDS));
     }
   }

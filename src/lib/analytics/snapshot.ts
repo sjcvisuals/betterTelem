@@ -187,6 +187,7 @@ export function buildSnapshot(data: RaceData, options: SnapshotOptions): RaceSna
       bestLapSeconds: bestLap(laps),
       recentPaceSeconds: pace.averageSeconds,
       representativeLapCount: reps.length,
+      lastCrossingElapsedSeconds: lastLapEntry?.elapsedSeconds ?? null,
 
       gapTrend: trendFromCatchRate(catchRate),
       catchRateSecondsPerLap: catchRate,
