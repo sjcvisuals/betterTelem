@@ -5,6 +5,7 @@ import clsx from "clsx";
 import type { BattlePair, RaceSnapshot } from "@/lib/race/types";
 import { formatGap, formatLapTime, formatRate } from "@/lib/race/format";
 import { Card, CategoryBadge, ClassBadge, classColor } from "./ui";
+import { LiveryChip, TeamCrest, identityFor } from "./livery";
 
 /**
  * Battle view: compares two cars fighting for position. The headline card
@@ -31,12 +32,23 @@ function BattleDetail({ battle, snapshot }: { battle: BattlePair; snapshot: Race
             key={car.carNumber}
             className={clsx("min-w-0", index === 0 ? "text-left" : "order-3 text-right")}
           >
-            <p
-              className="tabular text-2xl font-bold"
-              style={{ color: classColor(car.className) }}
-            >
-              #{car.carNumber}
-            </p>
+            <div className={clsx("flex items-center gap-2", index === 1 && "justify-end")}>
+              {index === 0 && (
+                <TeamCrest identity={identityFor(car.carNumber, car.team)} size={28} />
+              )}
+              <div>
+                <LiveryChip carNumber={car.carNumber} team={car.team} size="md" />
+                <p
+                  className="tabular text-lg font-bold"
+                  style={{ color: classColor(car.className) }}
+                >
+                  #{car.carNumber}
+                </p>
+              </div>
+              {index === 1 && (
+                <TeamCrest identity={identityFor(car.carNumber, car.team)} size={28} />
+              )}
+            </div>
             <p className="truncate text-sm font-semibold">{car.team}</p>
             <p className="text-xs text-muted">
               P{car.classPosition} {car.className} • {car.currentDriver ?? "—"}

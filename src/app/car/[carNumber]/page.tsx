@@ -7,7 +7,8 @@ import { DemoControls } from "@/components/demo-controls";
 import { EventCard } from "@/components/event-feed";
 import { ProvenanceFooter } from "@/components/provenance-footer";
 import { useCarDetail, useSnapshot } from "@/components/race-provider";
-import { Card, ClassBadge, classColor } from "@/components/ui";
+import { Card, ClassBadge } from "@/components/ui";
+import { LiveryChip, TeamCrest, identityFor } from "@/components/livery";
 import { formatGap, formatLapTime } from "@/lib/race/format";
 
 export default function CarPage({ params }: { params: Promise<{ carNumber: string }> }) {
@@ -37,15 +38,12 @@ export default function CarPage({ params }: { params: Promise<{ carNumber: strin
         <>
           <header className="rounded-xl border border-line bg-surface p-4 sm:p-5">
             <div className="flex flex-wrap items-center gap-4">
-              <span
-                className="tabular flex h-16 w-20 items-center justify-center rounded-xl text-2xl font-black"
-                style={{
-                  background: `color-mix(in srgb, ${classColor(data.state.className)} 16%, transparent)`,
-                  color: classColor(data.state.className),
-                }}
-              >
-                #{data.state.carNumber}
-              </span>
+              <TeamCrest
+                identity={identityFor(data.state.carNumber, data.state.team)}
+                size={56}
+                title={`${data.state.team} crest`}
+              />
+              <LiveryChip carNumber={data.state.carNumber} team={data.state.team} size="lg" />
               <div className="min-w-0">
                 <h1 className="truncate text-xl font-bold sm:text-2xl">{data.state.team}</h1>
                 <p className="mt-0.5 flex flex-wrap items-center gap-2 text-sm text-muted">

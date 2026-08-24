@@ -7,6 +7,7 @@ import { estimateLapProgress } from "@/lib/analytics/track-position";
 import { trackOutlineFor } from "@/lib/track-maps";
 import { Card, CategoryBadge, ClassBadge, InfoTip, classColor } from "./ui";
 import { useRaceControls } from "./race-provider";
+import { LiveryCarMark, LiveryChip, TeamCrest, TeamCrestMark, identityFor } from "./livery";
 
 /**
  * Estimated live track map. OpenWEC has no GPS feed, so each car's dot is
@@ -21,6 +22,7 @@ interface DotState {
   car: LiveCarState;
   x: number;
   y: number;
+  headingDeg: number;
   inPit: boolean;
   overdue: boolean;
 }
@@ -83,12 +85,22 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
           retired: car.retired,
         });
         if (progress.inPit) {
-          next.push({ car, x: 0, y: 0, inPit: true, overdue: false });
+          next.push({ car, x: 0, y: 0, headingDeg: 0, inPit: true, overdue: false });
           continue;
         }
         if (progress.fraction == null) continue;
-        const point = path.getPointAtLength(progress.fraction * total);
-        next.push({ car, x: point.x, y: point.y, inPit: false, overdue: progress.overdue });
+        const at = progress.fraction * total;
+        const point = path.getPointAtLength(at);
+        const ahead = path.getPointAtLength(Math.min(total, at + Math.max(6, total * 0.004)));
+        const headingDeg = (Math.atan2(ahead.y - point.y, ahead.x - point.x) * 180) / Math.PI;
+        next.push({
+          car,
+          x: point.x,
+          y: point.y,
+          headingDeg,
+          inPit: false,
+          overdue: progress.overdue,
+        });
       }
       setDots(next);
     };
@@ -126,12 +138,15 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
       }
       subtitle={
         <>
-          Positions estimated from timing, not GPS.{" "}
-          <InfoTip label="How track positions are estimated">
-            OpenWEC provides no GPS data. Each dot is placed by the time since the
-            car last crossed the line divided by its recent pace — accurate to a few
-            seconds of track time. Cars past their expected crossing hold just before
-            the line. Pitted cars are shown in the pit box.
+          Positions estimated from timing, not GPS. Cars are painted in simplified
+          liveries so you can match them to the broadcast.{" "}
+          <InfoTip label="How track positions and liveries work">
+            OpenWEC provides no GPS, logos or car photos. Each marker is placed by
+            the time since the car last crossed the line divided by its recent pace.
+            The colours are a simplified 2025 ELMS livery palette — not official
+            artwork — so “the pink Porsche” or “the yellow-green prototype” is
+            easier to spot than a number. Team crests are monograms, not official
+            logos. Filter to one class to see crests beside every car.
           </InfoTip>
         </>
       }
@@ -203,10 +218,10 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
         {/* Pit box */}
         <g>
           <rect
-            x={outline.pitPoint.x - 30}
-            y={outline.pitPoint.y - 14}
-            width={60 + Math.max(0, pitDots.length - 2) * 16}
-            height={28}
+            x={outline.pitPoint.x - 36}
+            y={outline.pitPoint.y - 16}
+            width={72 + Math.max(0, pitDots.length - 2) * 22}
+            height={32}
             rx={8}
             fill="var(--surface-raised)"
             stroke="var(--border)"
@@ -223,9 +238,10 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
             <CarDot
               key={dot.car.carNumber}
               dot={dot}
-              x={outline.pitPoint.x - 14 + index * 16}
+              x={outline.pitPoint.x - 18 + index * 22}
               y={outline.pitPoint.y}
               selected={selectedCar === dot.car.carNumber}
+              showCrest
               onSelect={setSelectedCar}
             />
           ))}
@@ -233,19 +249,26 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
 
         {/* Running cars */}
         {runningDots.map((dot) => (
-          <CarDot
-            key={dot.car.carNumber}
-            dot={dot}
-            x={dot.x}
-            y={dot.y}
-            selected={selectedCar === dot.car.carNumber}
-            onSelect={setSelectedCar}
-          />
+            <CarDot
+              key={dot.car.carNumber}
+              dot={dot}
+              x={dot.x}
+              y={dot.y}
+              selected={selectedCar === dot.car.carNumber}
+              showCrest={classFilter !== "All" || selectedCar === dot.car.carNumber}
+              onSelect={setSelectedCar}
+            />
         ))}
       </svg>
 
       {selected && (
         <div className="mt-2 flex flex-wrap items-center gap-2 rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm">
+          <TeamCrest
+            identity={identityFor(selected.carNumber, selected.team)}
+            size={32}
+            title={`${selected.team} crest`}
+          />
+          <LiveryChip carNumber={selected.carNumber} team={selected.team} size="md" />
           <span className="tabular font-bold" style={{ color: classColor(selected.className) }}>
             #{selected.carNumber}
           </span>
@@ -279,16 +302,17 @@ function CarDot({
   x,
   y,
   selected,
+  showCrest,
   onSelect,
 }: {
   dot: DotState;
   x: number;
   y: number;
   selected: boolean;
+  showCrest: boolean;
   onSelect: (carNumber: string | null) => void;
 }) {
-  const color = classColor(dot.car.className);
-  const isLeader = dot.car.classPosition === 1;
+  const identity = identityFor(dot.car.carNumber, dot.car.team);
   return (
     <g
       transform={`translate(${x} ${y})`}
@@ -296,28 +320,18 @@ function CarDot({
       className="cursor-pointer"
       role="button"
       aria-label={`Car ${dot.car.carNumber}, ${dot.car.team}`}
+      opacity={dot.inPit ? 0.7 : dot.overdue ? 0.7 : 1}
     >
-      {/* Invisible enlarged hit area: dots are small and move continuously. */}
-      <circle r={20} fill="transparent" stroke="none" />
-      <circle
-        r={selected ? 13 : 9}
-        fill={color}
-        stroke={selected ? "var(--foreground)" : "var(--background)"}
-        strokeWidth={selected ? 3 : 2}
-        opacity={dot.inPit ? 0.6 : dot.overdue ? 0.55 : 1}
-      />
-      {(isLeader || selected) && (
-        <text
-          y={4}
-          fontSize={selected ? 12 : 10}
-          fontWeight={700}
-          fill="var(--background)"
-          textAnchor="middle"
-          pointerEvents="none"
-        >
-          {dot.car.carNumber}
-        </text>
+      <circle r={22} fill="transparent" stroke="none" />
+      {showCrest && (
+        <TeamCrestMark identity={identity} x={0} y={-16} size={selected ? 16 : 13} />
       )}
+      <LiveryCarMark
+        identity={identity}
+        className={dot.car.className}
+        selected={selected}
+        headingDeg={dot.headingDeg}
+      />
     </g>
   );
 }
