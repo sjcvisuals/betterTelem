@@ -19,7 +19,7 @@ Every derived number is labeled **FACT** (observed in timing data), **TREND**
 
 | Route | Purpose |
 | --- | --- |
-| `/live` | Main dashboard: race header, class-first timing tower, battle to watch, pit-cycle strategy view, "What just happened?" feed, race timeline |
+| `/live` | Main dashboard: race header, YouTube stream embed, estimated track map with livery-painted cars, class-first timing tower, battle to watch, pit-cycle strategy view, "What just happened?" feed, race timeline |
 | `/car/[carNumber]` | One car: lap chart, gap-to-leader chart, position history, stint breakdown, events, auto-generated plain-language summary |
 | `/class/[className]` | Second-screen view for one class (e.g. `/class/LMP2`, `/class/LMGT3`); class names are URL-encoded (`/class/LMP2%20Pro%2FAm`) |
 

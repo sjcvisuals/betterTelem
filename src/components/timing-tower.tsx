@@ -5,7 +5,8 @@ import { useState } from "react";
 import clsx from "clsx";
 import type { LiveCarState, RaceSnapshot } from "@/lib/race/types";
 import { formatGap, formatLapTime, formatRate } from "@/lib/race/format";
-import { Card, ClassBadge, InfoTip, TrendArrow, classColor } from "./ui";
+import { Card, ClassBadge, InfoTip, TrendArrow } from "./ui";
+import { LiveryChip, TeamCrest, identityFor } from "./livery";
 
 /**
  * Beginner-friendly timing tower. Class position first, gaps explained in
@@ -71,7 +72,7 @@ function CarRow({
         aria-label={`Car ${car.carNumber} ${car.team}, ${
           car.classPosition != null ? `P${car.classPosition} in ${car.className}` : car.className
         }. ${gapText(car)}. Press to ${expanded ? "collapse" : "expand"} details.`}
-        className="grid w-full grid-cols-[2.4rem_3.2rem_minmax(0,1fr)_auto] items-center gap-x-3 rounded-lg px-2 py-2 text-left sm:grid-cols-[2.6rem_3.4rem_minmax(0,1.2fr)_minmax(0,1fr)_auto]"
+        className="grid w-full grid-cols-[2.4rem_minmax(3.6rem,auto)_minmax(0,1fr)_auto] items-center gap-x-3 rounded-lg px-2 py-2 text-left sm:grid-cols-[2.6rem_minmax(4.2rem,auto)_minmax(0,1.2fr)_minmax(0,1fr)_auto]"
       >
         {/* Class position */}
         <span className="flex flex-col items-center">
@@ -85,20 +86,21 @@ function CarRow({
           )}
         </span>
 
-        {/* Car number */}
-        <span
-          className="tabular flex h-9 items-center justify-center rounded-md text-base font-bold"
-          style={{
-            background: `color-mix(in srgb, ${classColor(car.className)} 16%, transparent)`,
-            color: classColor(car.className),
-          }}
-        >
-          #{car.carNumber}
+        {/* Livery chip + number */}
+        <span className="flex items-center justify-center">
+          <LiveryChip carNumber={car.carNumber} team={car.team} />
         </span>
 
         {/* Team / driver / class */}
         <span className="min-w-0">
-          <span className="block truncate text-sm font-semibold">{car.team}</span>
+          <span className="flex min-w-0 items-center gap-1.5">
+            <TeamCrest
+              identity={identityFor(car.carNumber, car.team)}
+              size={20}
+              title={`${car.team} crest`}
+            />
+            <span className="truncate text-sm font-semibold">{car.team}</span>
+          </span>
           <span className="mt-0.5 flex min-w-0 items-center gap-1.5 text-xs text-muted">
             {showClassBadge && <ClassBadge className={car.className} compact />}
             <span className="truncate">{car.currentDriver ?? "—"}</span>
