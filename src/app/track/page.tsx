@@ -1,7 +1,15 @@
 import { TrackGuide } from "@/components/track-guide";
 import { ProvenanceFooter } from "@/components/provenance-footer";
+import { parseGuideDate } from "@/lib/track-guide";
 
-export default function TrackHelperPage() {
+export default async function TrackHelperPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ asOf?: string }>;
+}) {
+  const { asOf } = await searchParams;
+  const now = parseGuideDate(asOf);
+
   return (
     <div className="space-y-4">
       <header>
@@ -11,7 +19,7 @@ export default function TrackHelperPage() {
           ticket actually includes the pit walk vs the grid walk.
         </p>
       </header>
-      <TrackGuide />
+      <TrackGuide now={now} />
       <ProvenanceFooter />
     </div>
   );
