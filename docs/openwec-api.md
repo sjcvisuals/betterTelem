@@ -227,7 +227,7 @@ type Lap = {
 | Protected endpoints need a manually-approved key | Laps/stints unavailable without approval | Demo mode is fully functional without a key; live mode degrades to entry list + classification via public `results` |
 | No time-remaining / race clock endpoint | Cannot show official remaining time in live mode | Derived from `session_at` + assumed 4 h ELMS race length, labeled as estimate |
 | No tyre compound, fuel, or weather data | Cannot make tyre/fuel claims | UI never claims tyre compound or fuel state; stint age is used instead |
-| No team logos, livery photos or GPS | Cannot show official artwork or true track position | Track map uses estimated lap progress and a simplified in-app livery palette; crests are monograms, not official logos |
+| No team logos, livery photos or GPS | Cannot show official artwork or true track position | Track map uses estimated lap progress and circular markers in a simplified in-app livery palette; crests are monograms, not official logos |
 | Race-control periods are lap-indexed, not timestamped | FCY timing is approximate | Periods are mapped to laps, matching how the timing tower reasons |
 | `tyre_supplier`, `country`, `imsa_rating` observed `null` for ELMS | Cosmetic | Fields hidden when null |
 | No overall/class position per lap | Position history must be computed | Positions are derived from cumulative elapsed time per lap crossing |
