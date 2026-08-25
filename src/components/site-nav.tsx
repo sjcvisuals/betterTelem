@@ -32,10 +32,8 @@ export function SiteNav() {
         href="/track"
         aria-current={onTrack ? "page" : undefined}
         className={clsx(
-          "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-bold shadow-sm transition-transform hover:scale-[1.02]",
-          onTrack
-            ? "bg-spotlight-ink text-spotlight ring-2 ring-spotlight"
-            : "bg-spotlight text-spotlight-ink",
+          "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-bold text-spotlight-ink shadow-[0_6px_18px_rgba(255,200,87,0.28)] transition-transform hover:scale-[1.02]",
+          onTrack ? "bg-spotlight ring-2 ring-foreground/70" : "bg-spotlight",
         )}
       >
         Track helper
