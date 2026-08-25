@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { RaceProvider } from "@/components/race-provider";
+import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,23 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col">
         <RaceProvider>
           <div className="mx-auto w-full max-w-6xl flex-1 px-3 pb-10 pt-4 sm:px-5">
-            <nav
-              aria-label="Main navigation"
-              className="mb-4 flex items-center gap-4 text-sm"
-            >
-              <Link href="/live" className="text-lg font-black tracking-tight">
-                better<span className="text-accent">Telem</span>
-              </Link>
-              <Link href="/live" className="text-muted hover:text-foreground">
-                Live
-              </Link>
-              <Link href="/track" className="text-muted hover:text-foreground">
-                Track helper
-              </Link>
-              <span className="ml-auto text-xs text-muted">
-                ELMS race companion • data by OpenWEC
-              </span>
-            </nav>
+            <SiteNav />
             {children}
           </div>
         </RaceProvider>

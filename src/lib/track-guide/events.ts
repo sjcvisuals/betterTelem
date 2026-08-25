@@ -304,15 +304,57 @@ export const TRACK_EVENTS: TrackEvent[] = [
   },
 ];
 
-function todayStamp(now: Date): string {
-  const y = now.getUTCFullYear();
-  const m = String(now.getUTCMonth() + 1).padStart(2, "0");
-  const d = String(now.getUTCDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
+
+/** Format YYYY-MM-DD from the ISO string itself so timezones cannot shift the day. */
+export function formatIsoDay(iso: string, withYear = false): string {
+  const [year, month, day] = iso.split("-");
+  const label = `${Number(day)} ${MONTHS[Number(month) - 1]}`;
+  return withYear ? `${label} ${year}` : label;
+}
+
+export function formatEventDateRange(event: Pick<TrackEvent, "startDate" | "endDate">): string {
+  return `${formatIsoDay(event.startDate)} – ${formatIsoDay(event.endDate, true)}`;
+}
+
+/**
+ * Optional `?asOf=YYYY-MM-DD` preview clock. Noon UTC keeps the civil date stable
+ * in European circuit timezones.
+ */
+export function parseGuideDate(isoDate: string | null | undefined): Date | undefined {
+  if (!isoDate || !/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) return undefined;
+  const parsed = new Date(`${isoDate}T12:00:00.000Z`);
+  return Number.isNaN(parsed.getTime()) ? undefined : parsed;
+}
+
+export function dateStampInTimeZone(now: Date, timeZone: string): string {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+  const year = parts.find((part) => part.type === "year")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  const day = parts.find((part) => part.type === "day")?.value;
+  return `${year}-${month}-${day}`;
 }
 
 export function eventStatus(event: TrackEvent, now = new Date()): TrackEvent["status"] {
-  const today = todayStamp(now);
+  const today = dateStampInTimeZone(now, event.timezone);
   if (today > event.endDate) return "past";
   if (today >= event.startDate && today <= event.endDate) return "this-weekend";
   return "upcoming";
@@ -328,4 +370,9 @@ export function upcomingEvents(now = new Date()): TrackEvent[] {
 
 export function eventById(id: string, now = new Date()): TrackEvent | undefined {
   return eventsWithStatus(now).find((e) => e.id === id);
+}
+
+/** The ELMS round whose local dates include today — used to auto-load the YouTube stream. */
+export function broadcastEventFor(now = new Date()): TrackEvent | undefined {
+  return eventsWithStatus(now).find((event) => event.status === "this-weekend");
 }

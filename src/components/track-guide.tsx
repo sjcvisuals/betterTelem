@@ -5,23 +5,11 @@ import clsx from "clsx";
 import {
   TICKET_PERK_LABEL,
   allTicketPerks,
+  formatEventDateRange,
   upcomingEvents,
   type TicketPerk,
-  type TrackEvent,
 } from "@/lib/track-guide";
 import { Card, CategoryBadge } from "./ui";
-
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-function formatIsoDay(iso: string, withYear = false): string {
-  const [year, month, day] = iso.split("-");
-  const label = `${Number(day)} ${MONTHS[Number(month) - 1]}`;
-  return withYear ? `${label} ${year}` : label;
-}
-
-function formatRange(event: TrackEvent): string {
-  return `${formatIsoDay(event.startDate)} – ${formatIsoDay(event.endDate, true)}`;
-}
 
 function perkHas(ticketPerks: TicketPerk[], perk: TicketPerk): boolean {
   return ticketPerks.includes(perk);
@@ -60,7 +48,7 @@ export function TrackGuide({ now = new Date() }: { now?: Date }) {
                 )}
               >
                 <p className="text-[11px] font-bold uppercase tracking-widest text-muted">
-                  {item.status === "this-weekend" ? "This weekend" : "Coming up"} · {formatRange(item)}
+                  {item.status === "this-weekend" ? "This weekend" : "Coming up"} · {formatEventDateRange(item)}
                 </p>
                 <p className="mt-1 font-semibold">{item.name}</p>
                 <p className="text-sm text-muted">

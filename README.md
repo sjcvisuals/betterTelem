@@ -19,7 +19,7 @@ Every derived number is labeled **FACT** (observed in timing data), **TREND**
 
 | Route | Purpose |
 | --- | --- |
-| `/live` | Main dashboard: race header, YouTube stream embed, estimated track map with livery-coloured number circles, class-first timing tower, battle to watch, pit-cycle strategy view, "What just happened?" feed, race timeline |
+| `/live` | Main dashboard: race header, Track helper call-to-action, YouTube stream (official ELMS channel live player auto-loads on race-weekend days; paste still works as an override), estimated track map with livery-coloured number circles, class-first timing tower, battle to watch, pit-cycle strategy view, "What just happened?" feed, race timeline |
 | `/track` | Track helper: day-by-day weekend timetable, upcoming events, official ticket links, and a plain-language comparison of what each ticket type actually includes |
 | `/car/[carNumber]` | One car: lap chart, gap-to-leader chart, position history, stint breakdown, events, auto-generated plain-language summary |
 | `/class/[className]` | Second-screen view for one class (e.g. `/class/LMP2`, `/class/LMGT3`); class names are URL-encoded (`/class/LMP2%20Pro%2FAm`) |
