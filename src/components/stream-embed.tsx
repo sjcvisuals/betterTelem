@@ -95,7 +95,7 @@ function StreamPasteForm({
 
 function PlayerFrame({ src, title }: { src: string; title: string }) {
   return (
-    <div className="aspect-video w-full overflow-hidden rounded-lg border border-line bg-black">
+    <div className="aspect-video w-full overflow-hidden rounded-md border border-white/10 bg-black shadow-inner">
       <iframe
         src={src}
         title={title}
@@ -113,45 +113,60 @@ function IdleBroadcast({ nextEvent }: { nextEvent: TrackEvent | undefined }) {
 
   return (
     <Card
+      tone="media"
       title="Race broadcast"
       subtitle="The official ELMS YouTube stream appears here by itself on race-weekend days — no link to paste."
     >
-      <div className="space-y-3 text-sm">
-        {nextEvent ? (
-          <p>
-            Next up: <span className="font-semibold">{nextEvent.name}</span>
-            <span className="text-muted"> · {formatEventDateRange(nextEvent)}</span>
+      <div className="relative overflow-hidden rounded-md border border-white/8 bg-[#07080c]">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-50"
+          style={{
+            background:
+              "repeating-linear-gradient(-62deg, transparent, transparent 14px, rgba(76,195,255,0.05) 14px, rgba(76,195,255,0.05) 15px)",
+          }}
+        />
+        <div className="relative flex min-h-[10.5rem] flex-col justify-end gap-1 p-5">
+          <p className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-flag-red">
+            <span className="h-1.5 w-1.5 rounded-full bg-flag-red" />
+            Goes live on race weekend
           </p>
-        ) : (
-          <p className="text-muted">No upcoming ELMS round is listed yet.</p>
-        )}
-        <p className="text-muted">
-          Practice, qualifying and the 4-hour race are streamed free on the official channel. When
-          that weekend starts, this panel loads the live player automatically.
-        </p>
+          {nextEvent ? (
+            <>
+              <p className="text-xl font-black tracking-tight">{nextEvent.name}</p>
+              <p className="text-sm text-muted">{formatEventDateRange(nextEvent)}</p>
+            </>
+          ) : (
+            <p className="text-sm text-muted">No upcoming ELMS round is listed yet.</p>
+          )}
+          <p className="mt-1 max-w-xl text-sm text-muted">
+            Practice, qualifying and the 4-hour race stream free on the official channel. This
+            panel loads the player automatically when that weekend starts.
+          </p>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
         <a
           href={ELMS_YOUTUBE_CHANNEL_URL}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex text-sm font-semibold text-accent hover:underline"
+          className="font-semibold text-accent hover:underline"
         >
           Official ELMS YouTube
         </a>
-        <div>
-          <button
-            type="button"
-            onClick={() => setShowPaste((open) => !open)}
-            className="text-xs font-semibold text-muted hover:text-foreground"
-          >
-            {showPaste ? "Hide paste box" : "Paste a replay or a different stream"}
-          </button>
-          {showPaste && (
-            <div className="mt-2">
-              <StreamPasteForm onLoaded={() => undefined} />
-            </div>
-          )}
-        </div>
+        <button
+          type="button"
+          onClick={() => setShowPaste((open) => !open)}
+          className="text-xs font-semibold text-muted hover:text-foreground"
+        >
+          {showPaste ? "Hide paste box" : "Paste a replay or a different stream"}
+        </button>
       </div>
+      {showPaste && (
+        <div className="mt-2">
+          <StreamPasteForm onLoaded={() => undefined} />
+        </div>
+      )}
     </Card>
   );
 }
@@ -173,6 +188,7 @@ export function StreamEmbed({ now = new Date() }: { now?: Date }) {
   if (source.mode === "official-live") {
     return (
       <Card
+        tone="media"
         title="Race broadcast"
         subtitle={`${source.event.name} · official ELMS YouTube, loaded automatically for this weekend`}
         actions={
@@ -214,6 +230,7 @@ export function StreamEmbed({ now = new Date() }: { now?: Date }) {
 
   return (
     <Card
+      tone="media"
       title="Race broadcast"
       subtitle="Timing feeds typically run 30–60s ahead of the video stream."
       actions={

@@ -1,6 +1,6 @@
 export function ProvenanceFooter() {
   return (
-    <footer className="mt-8 rounded-xl border border-line bg-surface p-4 text-xs leading-relaxed text-muted">
+    <footer className="mt-10 border-t border-white/8 pt-5 text-xs leading-relaxed text-muted">
       <p className="font-semibold uppercase tracking-widest text-foreground">
         About this data
       </p>

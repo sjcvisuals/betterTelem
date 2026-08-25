@@ -55,9 +55,9 @@ function BattleDetail({ battle, snapshot }: { battle: BattlePair; snapshot: Race
             </p>
           </div>
         ))}
-        <div className="order-2 text-center">
-          <p className="tabular text-3xl font-bold">{formatGap(battle.gapSeconds)}</p>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted">gap</p>
+        <div className="order-2 rounded-2xl bg-black/45 px-3 py-3 text-center ring-1 ring-white/10">
+          <p className="tabular text-3xl font-black tracking-tight sm:text-4xl">{formatGap(battle.gapSeconds)}</p>
+          <p className="mt-1 text-[10px] font-black uppercase tracking-[0.2em] text-trend-up">gap</p>
         </div>
       </div>
 
@@ -146,6 +146,7 @@ export function BattleView({
 
   return (
     <Card
+      tone="battle"
       title="Battle to watch"
       subtitle="Cars fighting for the same class position."
     >
@@ -164,9 +165,9 @@ export function BattleView({
                   onClick={() => setSelected(index)}
                   aria-pressed={index === selected}
                   className={clsx(
-                    "rounded-lg border px-2.5 py-1 text-xs",
+                    "rounded-full border px-2.5 py-1 text-xs font-semibold",
                     index === selected
-                      ? "border-foreground text-foreground"
+                      ? "border-trend-up/50 bg-trend-up/15 text-foreground"
                       : "border-line text-muted hover:text-foreground",
                   )}
                 >

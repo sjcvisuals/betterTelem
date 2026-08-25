@@ -24,10 +24,10 @@ export function classColor(className: string): string {
 export function ClassBadge({ className: raceClass, compact = false }: { className: string; compact?: boolean }) {
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide"
+      className="inline-flex items-center gap-1.5 rounded-sm px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide"
       style={{
         color: classColor(raceClass),
-        background: `color-mix(in srgb, ${classColor(raceClass)} 14%, transparent)`,
+        background: `color-mix(in srgb, ${classColor(raceClass)} 18%, transparent)`,
       }}
     >
       <span
@@ -57,8 +57,8 @@ export function FlagBadge({ flag, large = false }: { flag: TrackFlag; large?: bo
       role="status"
       aria-label={`Track status: ${style.label}`}
       className={clsx(
-        "inline-flex items-center rounded font-bold uppercase tracking-wider",
-        large ? "px-3 py-1.5 text-sm" : "px-2 py-0.5 text-[11px]",
+        "flag-cut inline-flex items-center font-black uppercase tracking-wider shadow-sm",
+        large ? "px-3.5 py-1.5 text-sm" : "px-2.5 py-0.5 text-[11px]",
       )}
       style={{ background: style.bg, color: style.fg }}
     >
@@ -89,7 +89,7 @@ export function CategoryBadge({ category }: { category: EventCategory }) {
   const style = CATEGORY_STYLE[category];
   return (
     <span
-      className="inline-flex rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+      className="inline-flex rounded-full px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest"
       style={{ background: style.bg, color: style.fg }}
       title={style.title}
     >
@@ -127,23 +127,43 @@ export function TrendArrow({
   return null;
 }
 
+export type CardTone = "default" | "live" | "media" | "spotlight" | "battle";
+
+const TONE_MARK: Record<CardTone, string> = {
+  default: "var(--accent)",
+  live: "var(--accent)",
+  media: "var(--flag-red)",
+  spotlight: "var(--spotlight)",
+  battle: "var(--trend-up)",
+};
+
 export function Card({
   children,
   className,
   title,
   subtitle,
   actions,
+  tone = "default",
 }: {
   children: React.ReactNode;
   className?: string;
   title?: React.ReactNode;
   subtitle?: React.ReactNode;
   actions?: React.ReactNode;
+  tone?: CardTone;
 }) {
   return (
     <section
       className={clsx(
-        "rounded-xl border border-line bg-surface p-4",
+        "p-4",
+        tone === "media" &&
+          "rounded-lg border border-white/10 bg-[#0a0d14] shadow-[0_16px_40px_rgba(0,0,0,0.35)]",
+        tone === "spotlight" &&
+          "panel rounded-2xl border border-spotlight/35 border-l-4 border-l-spotlight",
+        tone === "battle" &&
+          "panel rounded-2xl border border-trend-up/25 border-l-4 border-l-trend-up",
+        tone === "live" && "panel rounded-2xl border border-line border-l-4 border-l-accent",
+        tone === "default" && "panel rounded-2xl border border-line",
         className,
       )}
     >
@@ -151,17 +171,63 @@ export function Card({
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
             {title && (
-              <h2 className="text-sm font-bold uppercase tracking-widest text-foreground">
+              <h2 className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted">
+                <span
+                  aria-hidden
+                  className="inline-block h-1.5 w-1.5 rounded-[2px]"
+                  style={{ background: TONE_MARK[tone] }}
+                />
                 {title}
               </h2>
             )}
-            {subtitle && <p className="mt-0.5 text-xs text-muted">{subtitle}</p>}
+            {subtitle && <p className="mt-1 text-xs leading-relaxed text-muted">{subtitle}</p>}
           </div>
           {actions}
         </div>
       )}
       {children}
     </section>
+  );
+}
+
+export function ClassFilterChip({
+  label,
+  selected,
+  onClick,
+  classNameForColor,
+  role = "tab",
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+  classNameForColor?: string;
+  role?: "tab" | "button";
+}) {
+  const color =
+    classNameForColor && classNameForColor !== "All" && classNameForColor !== "All classes"
+      ? classColor(classNameForColor)
+      : undefined;
+
+  return (
+    <button
+      type="button"
+      role={role}
+      aria-selected={role === "tab" ? selected : undefined}
+      aria-pressed={role === "button" ? selected : undefined}
+      onClick={onClick}
+      className={clsx(
+        "rounded-full px-2.5 py-1 text-xs font-semibold transition-colors",
+        selected && !color && "bg-foreground text-background",
+        !selected && "text-muted hover:bg-white/5 hover:text-foreground",
+      )}
+      style={
+        selected && color
+          ? { background: color, color: "#0b0e13" }
+          : undefined
+      }
+    >
+      {label}
+    </button>
   );
 }
 

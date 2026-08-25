@@ -20,13 +20,13 @@ export function DashboardShell({
   const { data, error, isLoading, isError, refetch } = useSnapshot();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <DemoControls scenarios={data?.demoScenarios ?? null} />
 
       {controls.mode === "LIVE" &&
         (controls.liveSelection.sessionId == null ||
           controls.liveSelection.eventId == null) && (
-          <div className="rounded-xl border border-line bg-surface p-6 text-sm text-muted">
+          <div className="rounded-lg border border-dashed border-line bg-black/20 p-6 text-sm text-muted">
             Select an ELMS season, event and session to follow live timing — or switch
             back to DEMO mode for the simulated race.
           </div>
