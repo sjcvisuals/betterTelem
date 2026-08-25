@@ -39,6 +39,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Link href="/live" className="text-muted hover:text-foreground">
                 Live
               </Link>
+              <Link href="/track" className="text-muted hover:text-foreground">
+                Track helper
+              </Link>
               <span className="ml-auto text-xs text-muted">
                 ELMS race companion • data by OpenWEC
               </span>

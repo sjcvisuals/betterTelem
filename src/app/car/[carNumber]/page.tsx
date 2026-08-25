@@ -50,6 +50,9 @@ export default function CarPage({ params }: { params: Promise<{ carNumber: strin
                   <ClassBadge className={data.state.className} />
                   {data.state.vehicle && <span>{data.state.vehicle}</span>}
                 </p>
+                <p className="mt-1 text-sm">
+                  Look for: {identityFor(data.state.carNumber, data.state.team).livery.look}
+                </p>
                 <p className="mt-1 text-sm text-muted">
                   {data.state.drivers.map((d) => `${d.firstName} ${d.lastName}`).join(" • ")}
                 </p>

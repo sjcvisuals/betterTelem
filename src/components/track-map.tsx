@@ -134,15 +134,14 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
       }
       subtitle={
         <>
-          Positions estimated from timing, not GPS. Circles are painted in
-          simplified team colours so you can match them to the broadcast.{" "}
+          Positions estimated from timing, not GPS. Circles use Racing Sports Cars
+          colour notes so you can match them to the broadcast.{" "}
           <InfoTip label="How track positions and liveries work">
             OpenWEC provides no GPS, logos or car photos. Each marker is placed by
             the time since the car last crossed the line divided by its recent pace.
-            Circles use a simplified 2025 ELMS colour palette — not official
-            artwork — so “the pink Porsche” or “the yellow-green prototype” is
-            easier to spot than hunting for a number. Timing-tower chips and crests
-            use the same palette.
+            Colours follow the Racing Sports Cars appearance table (Le Mans 2025,
+            same numbers/teams where they overlap). The official ELMS Spotter Guide
+            PDF on each race page is the best photo of how a car looks that weekend.
           </InfoTip>
         </>
       }
@@ -267,6 +266,9 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
             #{selected.carNumber}
           </span>
           <span className="font-semibold">{selected.team}</span>
+          <span className="text-muted">
+            Look for: {identityFor(selected.carNumber, selected.team).livery.look}
+          </span>
           <ClassBadge className={selected.className} compact />
           <span className="text-muted">
             {selected.classPosition != null ? `P${selected.classPosition} in class` : ""}
