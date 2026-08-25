@@ -11,11 +11,16 @@ import {
 } from "@/lib/track-guide";
 import { Card, CategoryBadge } from "./ui";
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function formatIsoDay(iso: string, withYear = false): string {
+  const [year, month, day] = iso.split("-");
+  const label = `${Number(day)} ${MONTHS[Number(month) - 1]}`;
+  return withYear ? `${label} ${year}` : label;
+}
+
 function formatRange(event: TrackEvent): string {
-  const start = new Date(`${event.startDate}T12:00:00`);
-  const end = new Date(`${event.endDate}T12:00:00`);
-  const opts: Intl.DateTimeFormatOptions = { day: "numeric", month: "short" };
-  return `${start.toLocaleDateString("en-GB", opts)} – ${end.toLocaleDateString("en-GB", { ...opts, year: "numeric" })}`;
+  return `${formatIsoDay(event.startDate)} – ${formatIsoDay(event.endDate, true)}`;
 }
 
 function perkHas(ticketPerks: TicketPerk[], perk: TicketPerk): boolean {
