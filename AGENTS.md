@@ -12,7 +12,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Demo mode is the default and is enough to exercise the product end-to-end (Spa 4h simulation, 44-car 2025 entry list). `npm run dev` serves http://localhost:3000; `/live` is the main dashboard.
 
-Track-map markers are **livery-coloured circles with numbers**. Rounded livery chips and team-crest monograms appear in the timing tower, battle view, map selection panel, and car page. Colours are in-app simplified 2025 ELMS palettes (`src/lib/liveries`), not OpenWEC logos/photos.
+Track-map markers are **livery-coloured circles with numbers**. Rounded livery chips and team-crest monograms appear in the timing tower, battle view, map selection panel, and car page. Colours follow Racing Sports Cars appearance notes (`src/lib/liveries`); the official weekend photo source is the ELMS Spotter Guide PDF on each race page. `/track` is the in-person weekend helper (timetable + ticket comparison).
 
 Standard commands live in the README (`npm run lint`, `npm test`, `npm run typecheck`, `npm run build`). Leave `next dev` running in tmux; do not put it in the environment update script.
 

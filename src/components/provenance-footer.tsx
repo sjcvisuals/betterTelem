@@ -24,11 +24,12 @@ export function ProvenanceFooter() {
           labeled TREND or ESTIMATE. They are interpretations, not official timing.
         </li>
         <li>
-          Team crests and car colours on the map are <strong>simplified livery
-          palettes</strong> drawn from publicly documented 2025 ELMS team colours —
-          not official logos or photographs (OpenWEC does not provide those). They
-          exist so a casual viewer can match “the pink Porsche” to a car without
-          hunting for a number.
+          Team crests and car colours on the map are <strong>simplified palettes</strong>{" "}
+          from the Racing Sports Cars appearance table (and well-known ELMS schemes) —
+          not official logos or photographs. The best photo reference is the ELMS
+          Spotter Guide PDF on each official race page. They exist so a casual viewer
+          can match “the white Porsche with the pink nose” to a car without hunting
+          for a number.
         </li>
         <li>
           betterTelem is an independent project. It is not an official European Le Mans

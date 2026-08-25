@@ -1,10 +1,10 @@
 /**
  * Simplified liveries for spotting cars on the broadcast.
  *
- * OpenWEC does not provide logos or car photos. These palettes are
- * approximations of publicly documented 2025 ELMS team colours (not official
- * artwork) so a viewer can match "the yellow-and-green prototype" to #43
- * without hunting for a number.
+ * Colour notes follow the Racing Sports Cars "Car Appearance" table
+ * (Le Mans 2025 Test, same numbers/teams where they overlap ELMS) plus
+ * well-known ELMS-only schemes. Official weekend photos live in the ELMS
+ * Spotter Guide PDF on each race page. These palettes are not licensed artwork.
  */
 
 export type LiveryPattern = "solid" | "split-h" | "split-v" | "stripe" | "tri" | "nose";
@@ -19,6 +19,8 @@ export interface Livery {
   pattern: LiveryPattern;
   /** Number colour chosen for contrast against the livery. */
   number: string;
+  /** Short spotting phrase, e.g. "green/yellow prototype". */
+  look: string;
 }
 
 export interface TeamIdentity {
@@ -37,6 +39,6 @@ export interface ResolvedIdentity {
   crestBg: string;
   crestFg: string;
   livery: Livery;
-  /** True when this came from the 2025 palette rather than a generated fallback. */
+  /** True when this came from the documented palette rather than a generated fallback. */
   documented: boolean;
 }
