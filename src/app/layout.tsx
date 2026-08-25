@@ -28,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <RaceProvider>
-          <div className="mx-auto w-full max-w-6xl flex-1 px-3 pb-10 pt-4 sm:px-5">
+      <div className="mx-auto w-full max-w-6xl flex-1 px-3 pb-12 pt-3 sm:px-5">
             <SiteNav />
             {children}
           </div>

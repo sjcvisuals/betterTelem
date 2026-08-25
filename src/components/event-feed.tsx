@@ -1,6 +1,6 @@
 "use client";
 
-import type { RaceEvent, RaceSnapshot } from "@/lib/race/types";
+import type { EventCategory, RaceEvent, RaceSnapshot } from "@/lib/race/types";
 import { formatClock } from "@/lib/race/format";
 import { Card, CategoryBadge, ClassBadge } from "./ui";
 
@@ -23,9 +23,18 @@ const KIND_ICON: Record<string, string> = {
   RACE_START: "🏁",
 };
 
+const CATEGORY_RAIL: Record<EventCategory, string> = {
+  FACT: "var(--class-lmp2)",
+  TREND: "var(--trend-up)",
+  ESTIMATE: "var(--flag-yellow)",
+};
+
 export function EventCard({ event }: { event: RaceEvent }) {
   return (
-    <article className="rounded-lg border border-line bg-surface-raised p-3">
+    <article
+      className="rounded-md border border-line bg-surface-raised p-3"
+      style={{ boxShadow: `inset 3px 0 0 ${CATEGORY_RAIL[event.category]}` }}
+    >
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-bold leading-snug">
           <span aria-hidden className="mr-1.5">

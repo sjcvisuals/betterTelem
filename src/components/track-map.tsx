@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import clsx from "clsx";
 import type { LiveCarState, RaceSnapshot } from "@/lib/race/types";
 import { estimateLapProgress } from "@/lib/analytics/track-position";
 import { trackOutlineFor } from "@/lib/track-maps";
-import { Card, CategoryBadge, ClassBadge, InfoTip, classColor } from "./ui";
+import { Card, CategoryBadge, ClassBadge, ClassFilterChip, InfoTip, classColor } from "./ui";
 import { useRaceControls } from "./race-provider";
 import { LiveryChip, LiveryMapDot, TeamCrest, identityFor } from "./livery";
 
@@ -148,21 +147,13 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
       actions={
         <div role="tablist" aria-label="Track map class filter" className="flex flex-wrap gap-1">
           {["All", ...snapshot.classNames].map((option) => (
-            <button
+            <ClassFilterChip
               key={option}
-              role="tab"
-              aria-selected={classFilter === option}
-              type="button"
+              label={option}
+              selected={classFilter === option}
               onClick={() => setClassFilter(option)}
-              className={clsx(
-                "rounded-lg px-2 py-1 text-xs font-semibold",
-                classFilter === option
-                  ? "bg-foreground text-background"
-                  : "text-muted hover:text-foreground",
-              )}
-            >
-              {option}
-            </button>
+              classNameForColor={option}
+            />
           ))}
         </div>
       }
@@ -255,7 +246,7 @@ export function TrackMap({ snapshot }: { snapshot: RaceSnapshot }) {
       </svg>
 
       {selected && (
-        <div className="mt-2 flex flex-wrap items-center gap-2 rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm">
+        <div className="mt-2 flex flex-wrap items-center gap-2 rounded-md border border-accent/25 bg-accent/8 px-3 py-2 text-sm">
           <TeamCrest
             identity={identityFor(selected.carNumber, selected.team)}
             size={32}

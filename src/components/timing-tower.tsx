@@ -5,7 +5,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import type { LiveCarState, RaceSnapshot } from "@/lib/race/types";
 import { formatGap, formatLapTime, formatRate } from "@/lib/race/format";
-import { Card, ClassBadge, InfoTip, TrendArrow } from "./ui";
+import { Card, ClassBadge, ClassFilterChip, InfoTip, TrendArrow, classColor } from "./ui";
 import { LiveryChip, TeamCrest, identityFor } from "./livery";
 
 /**
@@ -61,9 +61,11 @@ function CarRow({
   return (
     <li
       className={clsx(
-        "rounded-lg border border-transparent",
-        car.retired ? "opacity-45" : "hover:border-line",
+        "rounded-md border-l-[3px]",
+        car.retired ? "opacity-45" : "hover:bg-white/[0.03]",
+        car.classPosition === 1 && !car.retired && "bg-surface-raised/80",
       )}
+      style={{ borderLeftColor: classColor(car.className) }}
     >
       <button
         type="button"
@@ -250,6 +252,7 @@ export function TimingTower({
 
   return (
     <Card
+      tone="live"
       title="Timing tower"
       subtitle="Positions are within class — that is what each car is racing for."
       actions={
@@ -262,21 +265,13 @@ export function TimingTower({
             {CLASS_FILTERS.filter(
               (c) => c === "All classes" || snapshot.classNames.includes(c),
             ).map((option) => (
-              <button
+              <ClassFilterChip
                 key={option}
-                role="tab"
-                aria-selected={activeFilter === option}
-                type="button"
+                label={option}
+                selected={activeFilter === option}
                 onClick={() => setFilter(option)}
-                className={clsx(
-                  "rounded-lg px-2.5 py-1 text-xs font-semibold",
-                  activeFilter === option
-                    ? "bg-foreground text-background"
-                    : "text-muted hover:text-foreground",
-                )}
-              >
-                {option}
-              </button>
+                classNameForColor={option}
+              />
             ))}
           </div>
         )

@@ -18,13 +18,17 @@ export function TrackHelperBanner({ now = new Date() }: { now?: Date }) {
   return (
     <Link
       href="/track"
-      className="flex flex-col gap-3 rounded-xl border-2 border-accent bg-accent/10 p-4 no-underline transition-colors hover:bg-accent/15 sm:flex-row sm:items-center sm:justify-between"
+      className="group relative flex flex-col gap-3 overflow-hidden rounded-2xl rounded-br-[2.25rem] border border-spotlight/45 bg-gradient-to-r from-spotlight/22 via-spotlight/8 to-transparent p-4 no-underline shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-colors hover:from-spotlight/28 sm:flex-row sm:items-center sm:justify-between"
     >
-      <div className="min-w-0">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-accent">
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rotate-12 rounded-[2rem] bg-spotlight/25"
+      />
+      <div className="relative min-w-0">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-spotlight">
           {thisWeekend ? "At the circuit this weekend" : "Going to a race?"}
         </p>
-        <p className="mt-1 text-base font-bold text-foreground">
+        <p className="mt-1 text-lg font-black tracking-tight text-foreground">
           Track helper — tickets, timetable, pit walk vs grid walk
         </p>
         {event && (
@@ -34,7 +38,7 @@ export function TrackHelperBanner({ now = new Date() }: { now?: Date }) {
           </p>
         )}
       </div>
-      <span className="inline-flex shrink-0 items-center justify-center rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-background">
+      <span className="relative inline-flex shrink-0 items-center justify-center rounded-full bg-spotlight px-5 py-2.5 text-sm font-black text-spotlight-ink shadow-[0_8px_20px_rgba(255,200,87,0.28)] group-hover:brightness-110">
         Open Track helper →
       </span>
     </Link>

@@ -1,8 +1,18 @@
 "use client";
 
-import type { RaceSnapshot } from "@/lib/race/types";
+import type { RaceSnapshot, TrackFlag } from "@/lib/race/types";
 import { formatClock } from "@/lib/race/format";
 import { FlagBadge } from "./ui";
+
+const FLAG_RAIL: Record<TrackFlag, string> = {
+  GREEN: "var(--flag-green)",
+  YELLOW: "var(--flag-yellow)",
+  FCY: "var(--flag-yellow)",
+  SC: "var(--flag-sc)",
+  RED: "var(--flag-red)",
+  CHEQUERED: "var(--foreground)",
+  UNKNOWN: "var(--border)",
+};
 
 export function RaceHeader({ snapshot }: { snapshot: RaceSnapshot }) {
   const stale = snapshot.feedStatus === "STALE";
@@ -10,44 +20,45 @@ export function RaceHeader({ snapshot }: { snapshot: RaceSnapshot }) {
 
   return (
     <header
-      className="rounded-xl border border-line bg-surface p-4 sm:p-5"
+      className="panel rounded-2xl border border-line border-l-[5px] p-4 sm:p-5"
       aria-label="Race status"
+      style={{ borderLeftColor: FLAG_RAIL[snapshot.currentFlag] }}
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0">
+        <div className="min-w-0 pl-1">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted">
             {snapshot.session.seriesName} • {snapshot.session.sessionName}
             {snapshot.dataSource === "DEMO" && (
               <span
-                className="ml-2 rounded bg-accent/15 px-1.5 py-0.5 text-[10px] font-bold text-accent"
+                className="ml-2 rounded-sm bg-accent/20 px-1.5 py-0.5 text-[10px] font-black text-accent"
                 title="Simulated race for development and demonstration"
               >
                 DEMO DATA
               </span>
             )}
           </p>
-          <h1 className="mt-1 truncate text-xl font-bold sm:text-2xl">
+          <h1 className="mt-1 truncate text-2xl font-black tracking-tight sm:text-3xl">
             {snapshot.session.eventName}
           </h1>
           <p className="mt-0.5 text-sm text-muted">{snapshot.session.circuit}</p>
         </div>
 
-        <div className="flex flex-col items-end gap-2">
+        <div className="flex flex-wrap items-end justify-end gap-3">
           <FlagBadge flag={snapshot.currentFlag} large />
-          <div className="flex items-center gap-4 text-right">
+          <div className="flex items-end gap-3 text-right">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted">
                 Elapsed
               </p>
-              <p className="tabular text-lg font-semibold">
+              <p className="tabular text-base font-semibold text-muted">
                 {formatClock(snapshot.elapsedSeconds)}
               </p>
             </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted">
+            <div className="rounded-xl bg-black/40 px-3.5 py-2 ring-1 ring-white/10">
+              <p className="text-[10px] font-black uppercase tracking-widest text-accent">
                 Remaining
               </p>
-              <p className="tabular text-lg font-semibold">
+              <p className="tabular text-3xl font-black leading-none tracking-tight sm:text-4xl">
                 {ended ? "0:00:00" : formatClock(snapshot.remainingSeconds)}
               </p>
             </div>
@@ -56,14 +67,14 @@ export function RaceHeader({ snapshot }: { snapshot: RaceSnapshot }) {
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-muted">
                   Leader lap
                 </p>
-                <p className="tabular text-lg font-semibold">{snapshot.leaderLap}</p>
+                <p className="tabular text-lg font-bold">{snapshot.leaderLap}</p>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-line pt-3 text-xs text-muted">
+      <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-white/8 pt-3 text-xs text-muted">
         <span
           className="inline-flex items-center gap-1.5"
           role="status"
