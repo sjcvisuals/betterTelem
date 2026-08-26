@@ -15,6 +15,13 @@ function perkHas(ticketPerks: TicketPerk[], perk: TicketPerk): boolean {
   return ticketPerks.includes(perk);
 }
 
+function dayColumnClass(headline: string): string {
+  const text = headline.toLowerCase();
+  if (text.includes("race")) return "border-t-[3px] border-t-flag-green";
+  if (text.includes("qualifying")) return "border-t-[3px] border-t-spotlight";
+  return "border-t-[3px] border-t-lmp2";
+}
+
 export function TrackGuide({ now = new Date() }: { now?: Date }) {
   const events = useMemo(() => upcomingEvents(now), [now]);
   const [selectedId, setSelectedId] = useState(events[0]?.id ?? "");
@@ -31,6 +38,7 @@ export function TrackGuide({ now = new Date() }: { now?: Date }) {
   return (
     <div className="space-y-4">
       <Card
+        tone="spotlight"
         title="Upcoming race weekends"
         subtitle="Official ticket shops and a plain-language guide to what each pass actually includes."
       >
@@ -41,13 +49,18 @@ export function TrackGuide({ now = new Date() }: { now?: Date }) {
                 type="button"
                 onClick={() => setSelectedId(item.id)}
                 className={clsx(
-                  "w-full rounded-xl border p-4 text-left",
+                  "w-full rounded-2xl border p-4 text-left transition-colors",
                   item.id === event.id
-                    ? "border-accent bg-surface-raised"
-                    : "border-line hover:border-accent/50",
+                    ? "border-spotlight bg-spotlight/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+                    : "border-line hover:border-spotlight/50",
                 )}
               >
-                <p className="text-[11px] font-bold uppercase tracking-widest text-muted">
+                <p
+                  className={clsx(
+                    "text-[11px] font-black uppercase tracking-[0.16em]",
+                    item.status === "this-weekend" ? "text-spotlight" : "text-muted",
+                  )}
+                >
                   {item.status === "this-weekend" ? "This weekend" : "Coming up"} · {formatEventDateRange(item)}
                 </p>
                 <p className="mt-1 font-semibold">{item.name}</p>
@@ -81,7 +94,13 @@ export function TrackGuide({ now = new Date() }: { now?: Date }) {
         <p className="mb-3 text-xs text-muted">{event.timetableNote}</p>
         <div className="grid gap-4 lg:grid-cols-3">
           {event.days.map((day) => (
-            <div key={day.date} className="rounded-lg border border-line bg-surface-raised p-3">
+            <div
+              key={day.date}
+              className={clsx(
+                "rounded-lg border border-line bg-surface-raised p-3",
+                dayColumnClass(day.headline),
+              )}
+            >
               <p className="text-xs font-bold uppercase tracking-widest text-muted">
                 {day.weekday} {day.date.slice(8)}/{day.date.slice(5, 7)}
               </p>
@@ -115,7 +134,7 @@ export function TrackGuide({ now = new Date() }: { now?: Date }) {
             href={event.ticketsUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-lg bg-foreground px-3 py-1.5 text-xs font-semibold text-background"
+            className="rounded-full bg-spotlight px-3 py-1.5 text-xs font-black text-spotlight-ink"
           >
             {event.ticketsLabel}
           </a>
@@ -128,13 +147,13 @@ export function TrackGuide({ now = new Date() }: { now?: Date }) {
               key={ticket.id}
               className={clsx(
                 "rounded-lg border p-3",
-                ticket.recommended ? "border-accent/60 bg-surface-raised" : "border-line",
+                ticket.recommended ? "border-spotlight/70 bg-spotlight/10" : "border-line",
               )}
             >
               <div className="flex flex-wrap items-baseline gap-2">
                 <h3 className="font-semibold">{ticket.name}</h3>
                 {ticket.recommended && (
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-spotlight">
                     Best first ticket
                   </span>
                 )}

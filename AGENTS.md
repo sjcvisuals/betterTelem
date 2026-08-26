@@ -14,9 +14,11 @@ Demo mode is the default and is enough to exercise the product end-to-end (Spa 4
 
 Track-map markers are **livery-coloured circles with numbers**. Rounded livery chips and team-crest monograms appear in the timing tower, battle view, map selection panel, and car page. Colours follow Racing Sports Cars appearance notes (`src/lib/liveries`); the official weekend photo source is the ELMS Spotter Guide PDF on each race page.
 
-`/track` is the in-person weekend helper (timetable + ticket comparison). The accent **Track helper** pill in the header and the banner on `/live` are the intended entry points.
+`/track` is the in-person weekend helper (timetable + ticket comparison). The gold **Track helper** pill in the header and the gold banner on `/live` are the intended entry points.
 
 The YouTube panel on `/live` auto-embeds the official ELMS channel live player (`live_stream?channel=…`) when today (in the circuit timezone) falls inside a `TRACK_EVENTS` weekend. The demo Spa clock does **not** trigger that. A pasted URL still overrides. Off-weekend the panel stays empty and names the next round. `?asOf=YYYY-MM-DD` previews that weekend UI (auto-stream + “this weekend” copy).
+
+Track helper CTAs use gold (`--spotlight`); live telemetry and the logo stay cyan (`--accent`) so spectator actions do not compete with LMP2 class colour. Flag badges are cut/angled; class chips are square; primary CTAs are pills.
 
 Standard commands live in the README (`npm run lint`, `npm test`, `npm run typecheck`, `npm run build`). Leave `next dev` running in tmux; do not put it in the environment update script.
 

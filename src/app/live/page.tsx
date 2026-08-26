@@ -37,13 +37,13 @@ export default function LivePage() {
           >
             <LiveCompanionPanels />
           </Suspense>
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
-            <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+            <div className="space-y-5">
               <TrackMap snapshot={snapshot} />
               <TimingTower snapshot={snapshot} />
               <Timeline snapshot={snapshot} />
             </div>
-            <div className="space-y-4">
+            <div className="space-y-5">
               <BattleView snapshot={snapshot} />
               <StrategyView snapshot={snapshot} />
               <EventFeed snapshot={snapshot} />

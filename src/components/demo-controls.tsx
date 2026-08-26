@@ -17,7 +17,7 @@ export function DemoControls({ scenarios }: { scenarios: DemoScenarioInfo[] | nu
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <div className="rounded-xl border border-line bg-surface-raised">
+    <div className="rounded-lg border border-white/8 bg-black/25">
       <div className="flex flex-wrap items-center gap-2 p-2.5">
         <div
           className="flex overflow-hidden rounded-lg border border-line"
@@ -33,7 +33,9 @@ export function DemoControls({ scenarios }: { scenarios: DemoScenarioInfo[] | nu
               className={clsx(
                 "px-3 py-1 text-xs font-bold tracking-wider",
                 controls.mode === mode
-                  ? "bg-accent text-[#04222f]"
+                  ? mode === "LIVE"
+                    ? "bg-flag-green text-[#04140b]"
+                    : "bg-accent text-[#04222f]"
                   : "text-muted hover:text-foreground",
               )}
             >

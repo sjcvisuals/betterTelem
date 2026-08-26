@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import clsx from "clsx";
 import type { RaceSnapshot, StrategyCarView } from "@/lib/race/types";
-import { Card, CategoryBadge, ClassBadge, InfoTip, classColor } from "./ui";
+import { Card, CategoryBadge, ClassBadge, ClassFilterChip, InfoTip, classColor } from "./ui";
 
 /**
  * Pit-cycle / strategy visualization: each car's current stint as a progress
@@ -115,24 +115,16 @@ export function StrategyView({
         !fixedClass && (
           <div role="tablist" aria-label="Strategy class" className="flex flex-wrap gap-1">
             {snapshot.classNames.map((option) => (
-              <button
+              <ClassFilterChip
                 key={option}
-                role="tab"
-                aria-selected={activeClass === option}
-                type="button"
+                label={option}
+                selected={activeClass === option}
                 onClick={() => {
                   setSelectedClass(option);
                   setHighlightedCar(null);
                 }}
-                className={clsx(
-                  "rounded-lg px-2 py-1 text-xs font-semibold",
-                  activeClass === option
-                    ? "bg-foreground text-background"
-                    : "text-muted hover:text-foreground",
-                )}
-              >
-                {option}
-              </button>
+                classNameForColor={option}
+              />
             ))}
           </div>
         )

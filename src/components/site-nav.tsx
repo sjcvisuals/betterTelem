@@ -10,15 +10,20 @@ export function SiteNav() {
   const onTrack = path === "/track" || path.startsWith("/track/");
 
   return (
-    <nav aria-label="Main navigation" className="mb-4 flex flex-wrap items-center gap-3 text-sm">
-      <Link href="/live" className="text-lg font-black tracking-tight">
+    <nav
+      aria-label="Main navigation"
+      className="mb-5 flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-[color-mix(in_srgb,var(--surface)_82%,transparent)] px-3 py-2 shadow-[0_10px_36px_rgba(0,0,0,0.35)] backdrop-blur-md"
+    >
+      <Link href="/live" className="mr-1 text-lg font-black tracking-tight">
         better<span className="text-accent">Telem</span>
       </Link>
       <Link
         href="/live"
         className={clsx(
-          "rounded-lg px-2 py-1",
-          onLive && !onTrack ? "font-semibold text-foreground" : "text-muted hover:text-foreground",
+          "rounded-md px-2.5 py-1 text-sm",
+          onLive && !onTrack
+            ? "bg-accent/15 font-semibold text-accent"
+            : "text-muted hover:text-foreground",
         )}
       >
         Live
@@ -27,14 +32,12 @@ export function SiteNav() {
         href="/track"
         aria-current={onTrack ? "page" : undefined}
         className={clsx(
-          "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-bold shadow-sm transition-opacity hover:opacity-90",
-          onTrack
-            ? "bg-foreground text-background ring-2 ring-accent ring-offset-2 ring-offset-background"
-            : "bg-accent text-background",
+          "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-bold text-spotlight-ink shadow-[0_6px_18px_rgba(255,200,87,0.28)] transition-transform hover:scale-[1.02]",
+          onTrack ? "bg-spotlight ring-2 ring-foreground/70" : "bg-spotlight",
         )}
       >
         Track helper
-        <span className="hidden font-semibold opacity-80 sm:inline">tickets · times</span>
+        <span className="hidden font-semibold opacity-75 sm:inline">tickets · times</span>
       </Link>
       <span className="ml-auto hidden text-xs text-muted sm:inline">
         ELMS race companion • data by OpenWEC
